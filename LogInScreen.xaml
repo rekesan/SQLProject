@@ -5,79 +5,180 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLProject"
         mc:Ignorable="d"
-        Title="Login" Height="284.063" Width="325"
+        Title="Login" Height="365" Width="420"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
         WindowStartupLocation="CenterScreen"
-        FontFamily="Arial">
+        FontFamily="Calibri">
+    <Window.Resources>
+        <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="border">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="#FF591DB0" Offset="0"/>
+                                            <GradientStop Color="#FF812AFF" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="BorderBrush" TargetName="border" Value="Transparent"/>
+                                <Setter Property="Cursor" TargetName="border" Value="Hand"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="#FF591DB0"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="Transparent"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ButtonStyle2" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="border">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="#FFCD3222" Offset="0"/>
+                                            <GradientStop Color="#FFFF3E2A" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="BorderBrush" TargetName="border" Value="Transparent"/>
+                                <Setter Property="Cursor" TargetName="border" Value="Hand"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="#FFCD3222"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="Transparent"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
 
-    <Border CornerRadius="25" Background="DimGray">
+    <Border MouseDown="MouseDrag"  CornerRadius="25">
+        <Border.Background>
+            <LinearGradientBrush EndPoint="0.1,1" StartPoint="0.9,0">
+                <GradientStop Color="#FFF9BA5F" Offset="0"/>
+                <GradientStop Color="#FFE038AB" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.Background>
         <StackPanel Margin="20">
-            <Label Content="Login"
-                   Foreground="White" 
-                   HorizontalAlignment="Center" 
-                   FontSize="24" 
-                   FontWeight="Bold"
-                   Margin="0,10,0,0"/>
+
+            <Grid Height="80"
+                  HorizontalAlignment="Center"
+                  Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="94"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="images/logo.white.png"
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       Width="110"
+                       HorizontalAlignment="Right"
+                        Margin="-16,-8,0,-10"/>
+
+                <TextBlock Grid.Column="1"
+                           VerticalAlignment="Center"
+                           Foreground="white"
+                           Padding="5,0,0,0">
+                    <Run Text="National" FontWeight="Bold" FontSize="22"/>
+                    <LineBreak/>
+                    <Run Text="Identification System" FontWeight="Bold" FontSize="22"/>
+                    <LineBreak/>
+                    <Run Text="with Biometrics System" FontStyle="Italic" FontSize="16"/>
+                </TextBlock>
+            </Grid>
+
 
             <Label Content="Username"
-                   Margin="0,5,0,0"
-                   FontSize="15"
+                   Margin="40,10,0,0"
+                   FontSize="17"
                    Foreground="White"
-                   HorizontalAlignment="Center"/>
-            
-            <Border Height="25"
-                    Width="250"
+                   />
+
+            <Border Height="30"
+                    Width="300"
                     CornerRadius="10"
-                    Background="LightGray">
+                    Background="#FFF9CCF1">
                 <TextBox Name="login_username"
                        Background="Transparent"
-                       Foreground="Black"
-                       Width="250"
-                       FontSize="19"
+                       Foreground="#FF9C5F5F"
+                       BorderBrush="Transparent"
+                       FontSize="21"
                        Padding="10,0,0,0"
-                       VerticalAlignment="Stretch"/>
+                       VerticalAlignment="Center"
+                       Text="admin"
+                       BorderThickness="0"
+                       GotFocus="login_username_GotFocus"/>
             </Border>
-            
-            <Label Content="Password"
-                   Margin="0,10,0,0"
-                   FontSize="15"
-                   Foreground="White"
-                   HorizontalAlignment="Center"/>
 
-            <Border Height="25"
-                    Width="250"
+            <Label Content="Password"
+                   Margin="40,10,0,0"
+                   FontSize="17"
+                   Foreground="White"
+                   />
+
+            <Border Height="30"
+                    Width="300"
                     CornerRadius="10"
-                    Background="LightGray">
+                    Background="#FFF9CCF1">
                 <PasswordBox Name="login_password"
                        Background="Transparent"
-                       Foreground="Black"
-                       Width="250"
-                       FontSize="19"
-                       Padding="10,0,0,0"/>
+                       BorderBrush="Transparent"
+                       Foreground="#FF9C5F5F"
+                       FontSize="21"
+                       Padding="10,0,0,0"
+                       Password="randombullshit"
+                       VerticalAlignment="Center"
+                       BorderThickness="0"
+                       GotFocus="login_password_GotFocus"/>
             </Border>
 
-            <Grid Height="75">
+            <Grid Height="112">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <Button Content="Login"
-                        Width="100"
-                        Height="30"
-                        Margin="25,10,0,0"
+                        IsDefault="True"
+                        FontSize="18"
+                        Margin="49,39,17,36"
                         BorderBrush="Transparent"
-                        Background="Transparent"/>
+                        Foreground="White"
+                        Background="#FF812AFF"
+                        Click="Login_Click"
+                        Style="{DynamicResource ButtonStyle1}"/>
 
                 <Button Content="Cancel"
-                        Width="100"
-                        Height="30"
-                        Margin="0,10,25,0"
-                        Grid.Column="1"/>
+                        FontSize="18"
+                        Margin="17,39,50,36"
+                        Grid.Column="1"
+                        BorderBrush="Transparent"
+                        Foreground="White"
+                        Background="#FFFF3E2A"
+                        Click="Cancel_Click"
+                        Style="{DynamicResource ButtonStyle2}"/>
             </Grid>
-            
+
         </StackPanel>
     </Border>
 </Window>

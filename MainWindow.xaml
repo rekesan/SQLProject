@@ -5,9 +5,104 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLProject"
         mc:Ignorable="d"
-        Height="950" Width="845"
-        WindowStyle="None">
-    <Grid>
+        Title="National Identification System"
+        Height="760" Width="1000"
+        MinWidth="760"
+        MinHeight="760"
+        Background="#FFE6E6E6"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="Calibri">
 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0"
+              Background="#FF2E2E32"
+              MouseDown="MouseDrag">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="90"/>
+                <ColumnDefinition Width="337"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="1"
+                   Width="90"
+                   Height="90"
+                   HorizontalAlignment="Left"
+                   Source="images/logo.white.png"
+                   RenderOptions.BitmapScalingMode="HighQuality"/>
+
+            <Grid Grid.Column="2">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0"
+                   Content="National Identification System"
+                   Foreground="white"
+                   FontSize="26"
+                   FontWeight="Bold"
+                   
+                   Margin="3,10,0,-10"/>
+
+                <Label Grid.Row="1"
+                   Content="with Biometric System"
+                   Foreground="White"
+                   FontSize="22"
+                   FontWeight="Light"
+                   FontStyle="Italic"
+                   Margin="3,-8,0,0"/>
+            </Grid>
+            <Button Grid.Column="4"
+                    Content="Button 1"
+                    Height="50"
+                    Width="80"
+                    Background="#FF797983"
+                    BorderBrush="Transparent" Click="Btn_Click_1"/>
+            <Button Grid.Column="5"
+                    Content="Button 2"
+                    Height="50"
+                    Width="80"
+                    Background="#FF797983"
+                    BorderBrush="Transparent" Click="Btn_Click_2"/>
+            <Button Grid.Column="6"
+                    Content="Button 3"
+                    Height="50"
+                    Width="80"
+                    Background="#FF797983"
+                    BorderBrush="Transparent" Click="Btn_Click_3"/>
+        </Grid>
+        
+        <Grid Grid.Row="1">
+            <Image
+               Source="images/logo2.png"
+               Opacity=".15"
+               Panel.ZIndex="-2"
+               Margin="410,65,-178,-216"/>
+            <Frame Name="Page"
+                   Margin="20"
+                   NavigationUIVisibility="Hidden"/>
+        </Grid>
+
+        <Grid Grid.Row="2"
+              Background="#FFBBBBC5">
+            <Label Content="by Red Kean Santelices BSIT-2B"
+                   Foreground="#FF4F4F4F"
+                   FontSize="13"
+                   FontStyle="Italic"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Margin="0,0,10,0"/>
+        </Grid>
     </Grid>
 </Window>
