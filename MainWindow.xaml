@@ -33,13 +33,32 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
 
-            <Image Grid.Column="1"
-                   Width="90"
-                   Height="90"
-                   HorizontalAlignment="Left"
-                   Source="images/logo.white.png"
-                   RenderOptions.BitmapScalingMode="HighQuality"/>
-
+            <Button Grid.Column="1"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Click="Btn_Click_About">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="images/logo.white.png"
+                               RenderOptions.BitmapScalingMode="HighQuality"
+                               Width="100"
+                               Height="100"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="Transparent"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="Transparent"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
             <Grid Grid.Column="2">
 
                 <Grid.RowDefinitions>
@@ -64,25 +83,23 @@
                    Margin="3,-8,0,0"/>
             </Grid>
             <Button Grid.Column="4"
-                    Content="Button 1"
-                    Height="50"
-                    Width="80"
-                    Background="#FF797983"
-                    BorderBrush="Transparent" Click="Btn_Click_1"/>
+                    x:Name="Button1"
+                    Content="Add"
+                    Click="Btn_Click_1"
+                    Style="{StaticResource ButtonStyle}"/>
             <Button Grid.Column="5"
-                    Content="Button 2"
-                    Height="50"
-                    Width="80"
-                    Background="#FF797983"
-                    BorderBrush="Transparent" Click="Btn_Click_2"/>
+                    x:Name="Button2"
+                    Content="View"
+                    Click="Btn_Click_2"
+                    Style="{StaticResource ButtonStyle}"/>
             <Button Grid.Column="6"
-                    Content="Button 3"
-                    Height="50"
-                    Width="80"
-                    Background="#FF797983"
-                    BorderBrush="Transparent" Click="Btn_Click_3"/>
+                    x:Name="Button3"
+                    Content="Update"
+                    Click="Btn_Click_3"
+                    Style="{StaticResource ButtonStyle}"/>
+            
         </Grid>
-        
+
         <Grid Grid.Row="1">
             <Image
                Source="images/logo2.png"
@@ -90,19 +107,25 @@
                Panel.ZIndex="-2"
                Margin="410,65,-178,-216"/>
             <Frame Name="Page"
-                   Margin="20"
+                   Margin="40"
                    NavigationUIVisibility="Hidden"/>
         </Grid>
 
         <Grid Grid.Row="2"
               Background="#FFBBBBC5">
-            <Label Content="by Red Kean Santelices BSIT-2B"
-                   Foreground="#FF4F4F4F"
+
+            <TextBlock Foreground="#FF4F4F4F"
                    FontSize="13"
                    FontStyle="Italic"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Center"
-                   Margin="0,0,10,0"/>
+                   Margin="0,0,10,0">
+                <Run Text="NISBS Copyright 2021         [IT109Project]        " />
+                <Run Text="Github: " FontWeight="Black" FontStyle="Normal"/>
+                <Hyperlink>
+                    <Run Text="github.com/rekesan/SQLProject" FontStyle="Normal"/>
+                </Hyperlink>
+            </TextBlock>
         </Grid>
     </Grid>
 </Window>

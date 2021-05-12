@@ -72,7 +72,7 @@
         </Style>
     </Window.Resources>
 
-    <Border MouseDown="MouseDrag"  CornerRadius="25">
+    <Border MouseDown="MouseDrag"  CornerRadius="20">
         <Border.Background>
             <LinearGradientBrush EndPoint="0.1,1" StartPoint="0.9,0">
                 <GradientStop Color="#FFF9BA5F" Offset="0"/>
@@ -125,7 +125,7 @@
                        FontSize="21"
                        Padding="10,0,0,0"
                        VerticalAlignment="Center"
-                       Text="admin"
+                       Text="username"
                        BorderThickness="0"
                        GotFocus="login_username_GotFocus"/>
             </Border>
@@ -152,16 +152,18 @@
                        GotFocus="login_password_GotFocus"/>
             </Border>
 
-            <Grid Height="112">
+            <Grid Height="50"
+                  Margin="40,23,40,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
+                    <ColumnDefinition Width="20"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <Button Content="Login"
                         IsDefault="True"
                         FontSize="18"
-                        Margin="49,39,17,36"
+                        Height="50"
                         BorderBrush="Transparent"
                         Foreground="White"
                         Background="#FF812AFF"
@@ -170,8 +172,8 @@
 
                 <Button Content="Cancel"
                         FontSize="18"
-                        Margin="17,39,50,36"
-                        Grid.Column="1"
+                        Height="50"
+                        Grid.Column="2"
                         BorderBrush="Transparent"
                         Foreground="White"
                         Background="#FFFF3E2A"

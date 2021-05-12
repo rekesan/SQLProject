@@ -6,11 +6,171 @@
       xmlns:local="clr-namespace:SQLProject"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Page2">
+      Title="Page2"
+      FontFamily="Calibri"
+      Background="#FFC5C5C5">
+    
+
     <Grid>
-        <TextBlock Text="page 2"
-                   FontSize="50"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Registered Person(s)"
+               FontSize="18"
+               FontWeight="Black"
+               Margin="7,5,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               />
+        <DataGrid x:Name="Data_Grid"
+                  Grid.Column="0"
+                  Grid.RowSpan="5"
+                  Margin="10,35 ,10,10"
+                  AutoGenerateColumns="False"
+                  CanUserResizeColumns="True"
+                  BorderBrush="Transparent"
+                  FontSize="16"
+                  CanUserAddRows="False"
+                  AlternatingRowBackground="#FF969696"
+                  Background="White"
+                  ItemsSource="{Binding Path=PersonTable}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=ID_Number}" Header="ID" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Path=First_Name}" Header="First Name" Width="60*" IsReadOnly="True" CanUserSort="False"/>
+                <DataGridTextColumn Binding="{Binding Path=Last_Name}" Header="Last Name" Width="60*" IsReadOnly="True" CanUserSort="False"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border Grid.Column="1"
+                Grid.RowSpan="5"
+                Background="#FFE6E6E6"
+                />
+        
+        <Grid Grid.Column="2"
+              Margin="20,20,0,0"
+              VerticalAlignment="Top"
+              HorizontalAlignment="Left"
+              Width="450"
+              Height="350">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="180"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="180"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <Border Grid.Column="0"
+                Grid.Row="0"
+                CornerRadius="100"
+                Background="#FFDADADA">
+                <Image x:Name="Photo"
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       Opacity="1"/>
+            </Border>
+            
+            <Grid Grid.Column="1"
+                  Grid.Row="0"
+                  Margin="20,10,0,10">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="12"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Text="Last Name" 
+                               Height="12"/>
+
+                    <TextBlock Grid.Row="1"
+                               x:Name="Last_Name"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Margin="10,0,0,0"/>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="12"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="First Name" 
+                               Height="12"/>
+
+                    <TextBlock Grid.Row="1"
+                               x:Name="First_Name"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Margin="10,0,0,0"/>
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="12"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Middle Name" 
+                               Height="12"/>
+
+                    <TextBlock Grid.Row="1"
+                               x:Name="Middle_Name"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Margin="10,0,0,0"/>
+                </Grid>
+
+                <Grid Grid.Row="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="12"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Extension Name" 
+                               Height="12"/>
+
+                    <TextBlock Grid.Row="1"
+                               x:Name="Extension_Name"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Margin="10,0,0,0"/>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <!--
+        <TextBlock Grid.Column="1"
+                   Grid.Row="1"
+                   Grid.ColumnSpan="4"
+                   Name="text"
+                   Text="1"
+                   FontSize="25"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+        -->
     </Grid>
 </Page>
