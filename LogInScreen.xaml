@@ -8,6 +8,7 @@
         Title="Login" Height="365" Width="420"
         WindowStyle="None"
         AllowsTransparency="True"
+        ResizeMode="NoResize"
         Background="Transparent"
         WindowStartupLocation="CenterScreen"
         FontFamily="Calibri">

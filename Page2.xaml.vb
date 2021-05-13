@@ -46,9 +46,6 @@
             MsgBox(ex.Message)
         End Try
 
-
-
         dba.cmdReader.Close()
-
     End Sub
 End Class

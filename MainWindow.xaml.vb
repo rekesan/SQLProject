@@ -1,6 +1,6 @@
 ﻿Class MainWindow
-    Dim backColorNavigated = Color.FromRgb(70, 70, 77)
-    Dim backColor = Color.FromRgb(46, 46, 50)
+    Private backColorNavigated = Color.FromRgb(70, 70, 77)
+    Private backColor = Color.FromRgb(46, 46, 50)
     Private Sub Close_Click(sender As Object, e As RoutedEventArgs)
         Me.Close()
     End Sub
@@ -36,4 +36,20 @@
         btn.Background = New SolidColorBrush(color)
     End Sub
 
+    Sub Click_HyperLink(sender As Object, e As RequestNavigateEventArgs)
+        Process.Start(New ProcessStartInfo(e.Uri.AbsoluteUri))
+        e.Handled = True
+    End Sub
+
+    Private Sub Maximize(sender As Object, e As RoutedEventArgs)
+        If Me.WindowState = 0 Then
+            Me.WindowState = WindowState.Maximized
+        Else
+            Me.WindowState = WindowState.Normal
+        End If
+    End Sub
+
+    Private Sub Minimize(sender As Object, e As RoutedEventArgs)
+        Me.WindowState = WindowState.Minimized
+    End Sub
 End Class

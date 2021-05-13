@@ -9,7 +9,10 @@
         WindowStartupLocation="CenterScreen"
         FontFamily="Calibri"
         WindowStyle="None"
-        Background="#FFE6E6E6">
+        ResizeMode="NoResize"
+        Background="#FFE6E6E6"
+        BorderBrush="#FF2E2E32"
+        BorderThickness="2">
     <Grid MouseDown="Grid_MouseDown">
 
         <Grid.RowDefinitions>

@@ -5,13 +5,102 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLProject"
         mc:Ignorable="d"
-        Title="National Identification System"
         Height="760" Width="1000"
         MinWidth="760"
-        MinHeight="760"
+        MinHeight="400"
         Background="#FFE6E6E6"
         WindowStartupLocation="CenterScreen"
-        FontFamily="Calibri">
+        FontFamily="Calibri"
+        WindowStyle="None"
+        Style="{DynamicResource CustomWindowStyle}"
+        MouseDown="MouseDrag"
+        MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}}">
+    <Window.Resources>
+        <Style x:Key="CustomWindowStyle" TargetType="{x:Type Window}">
+            <Setter Property="WindowChrome.WindowChrome">
+                <Setter.Value>
+                    <WindowChrome CornerRadius="0" 
+                                  CaptionHeight="10" 
+                                  ResizeBorderThickness="1" 
+                                  UseAeroCaptionButtons="False" 
+                                  FrameworkElement.FlowDirection="RightToLeft" 
+                                  GlassFrameThickness="0,0,0,0" />
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="Background" Value="Gray" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Window}">
+                        <Grid Background="#FF242428">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="Transparent"
+                                    BorderThickness="1,25,1,1">
+                                <AdornerDecorator>
+                                    <ContentPresenter />
+                                </AdornerDecorator>
+                            </Border>
+
+                            <Grid Height="25"
+                                  VerticalAlignment="Top">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="205*"/>
+                                    <ColumnDefinition Width="712*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+
+                                <StackPanel Orientation="Horizontal"
+                                            Grid.Column="3"
+                                            Margin="0,-3,1,0">
+                                    <Button
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Width="35"
+                                            Content="○"
+                                            FontSize="23"
+                                            Height="40"
+                                            Background="#FF242428"
+                                            WindowChrome.IsHitTestVisibleInChrome="True" 
+                                            Style="{StaticResource ButtonStyle}" Click="Minimize"/>
+
+
+                                    <Button Click="Maximize"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Width="35"
+                                            Content="○"
+                                            FontSize="23"
+                                            Height="40"
+                                            Background="#FF242428"
+                                            WindowChrome.IsHitTestVisibleInChrome="True"
+                                            Style="{StaticResource ButtonStyle}"/>
+
+                                    <Button 
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Width="35"
+                                            Click="Close_Click"
+                                            Content="○"
+                                            FontSize="23"
+                                            Height="40"
+                                            Background="#FF242428"
+                                            WindowChrome.IsHitTestVisibleInChrome="True"
+                                            Style="{StaticResource ButtonStyle}"/>
+                                </StackPanel>
+                            </Grid>
+
+                        </Grid>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -21,8 +110,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0"
-              Background="#FF2E2E32"
-              MouseDown="MouseDrag">
+              Background="#FF2E2E32">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="90"/>
@@ -59,8 +147,8 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Grid Grid.Column="2">
 
+            <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="45"/>
                     <RowDefinition/>
@@ -97,7 +185,7 @@
                     Content="Update"
                     Click="Btn_Click_3"
                     Style="{StaticResource ButtonStyle}"/>
-            
+
         </Grid>
 
         <Grid Grid.Row="1">
@@ -120,10 +208,11 @@
                    HorizontalAlignment="Right"
                    VerticalAlignment="Center"
                    Margin="0,0,10,0">
-                <Run Text="NISBS Copyright 2021         [IT109Project]        " />
+                <Run Text="NISBS Copyright 2021     " />
+                <Run Text="[IT109Project]     " FontStyle="Normal"/>
                 <Run Text="Github: " FontWeight="Black" FontStyle="Normal"/>
-                <Hyperlink>
-                    <Run Text="github.com/rekesan/SQLProject" FontStyle="Normal"/>
+                <Hyperlink NavigateUri="https://github.com/rekesan/SQLProject" RequestNavigate="Click_HyperLink">
+                    <Run Text="rekesan/SQLProject" FontStyle="Normal"/>
                 </Hyperlink>
             </TextBlock>
         </Grid>
