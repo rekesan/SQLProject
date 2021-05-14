@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLProject"
         mc:Ignorable="d"
-        Height="760" Width="1000"
-        MinWidth="760"
-        MinHeight="400"
+        Height="760"
+        Width="1000"
+        MinWidth="950"
+        MinHeight="760"
         Background="#FFE6E6E6"
         WindowStartupLocation="CenterScreen"
         FontFamily="Calibri"
         WindowStyle="None"
         Style="{DynamicResource CustomWindowStyle}"
-        MouseDown="MouseDrag"
         MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}}">
     <Window.Resources>
         <Style x:Key="CustomWindowStyle" TargetType="{x:Type Window}">
@@ -21,7 +21,7 @@
                 <Setter.Value>
                     <WindowChrome CornerRadius="0" 
                                   CaptionHeight="10" 
-                                  ResizeBorderThickness="1" 
+                                  ResizeBorderThickness="10" 
                                   UseAeroCaptionButtons="False" 
                                   FrameworkElement.FlowDirection="RightToLeft" 
                                   GlassFrameThickness="0,0,0,0" />
@@ -34,17 +34,18 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Window}">
-                        <Grid Background="#FF242428">
+                        <Grid Background="#FF1A1A1E">
                             <Border Background="{TemplateBinding Background}"
                                     BorderBrush="Transparent"
-                                    BorderThickness="1,25,1,1">
+                                    BorderThickness="0,25,0,0">
                                 <AdornerDecorator>
                                     <ContentPresenter />
                                 </AdornerDecorator>
                             </Border>
 
                             <Grid Height="25"
-                                  VerticalAlignment="Top">
+                                  VerticalAlignment="Top"
+                                  MouseDown="MouseDrag">
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -56,15 +57,14 @@
 
                                 <StackPanel Orientation="Horizontal"
                                             Grid.Column="3"
-                                            Margin="0,-3,1,0">
-                                    <Button
-                                            VerticalAlignment="Center"
+                                            Margin="0,-3,0,0">
+                                    <Button VerticalAlignment="Center"
                                             HorizontalAlignment="Center"
                                             Width="35"
                                             Content="○"
                                             FontSize="23"
                                             Height="40"
-                                            Background="#FF242428"
+                                            Background="Transparent"
                                             WindowChrome.IsHitTestVisibleInChrome="True" 
                                             Style="{StaticResource ButtonStyle}" Click="Minimize"/>
 
@@ -76,19 +76,18 @@
                                             Content="○"
                                             FontSize="23"
                                             Height="40"
-                                            Background="#FF242428"
+                                            Background="Transparent"
                                             WindowChrome.IsHitTestVisibleInChrome="True"
                                             Style="{StaticResource ButtonStyle}"/>
 
-                                    <Button 
-                                            VerticalAlignment="Center"
+                                    <Button VerticalAlignment="Center"
                                             HorizontalAlignment="Center"
                                             Width="35"
                                             Click="Close_Click"
                                             Content="○"
                                             FontSize="23"
                                             Height="40"
-                                            Background="#FF242428"
+                                            Background="Transparent"
                                             WindowChrome.IsHitTestVisibleInChrome="True"
                                             Style="{StaticResource ButtonStyle}"/>
                                 </StackPanel>
@@ -114,7 +113,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="90"/>
-                <ColumnDefinition Width="337"/>
+                <ColumnDefinition Width="345"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="100"/>
@@ -129,8 +128,8 @@
                     <ControlTemplate>
                         <Image Source="images/logo.white.png"
                                RenderOptions.BitmapScalingMode="HighQuality"
-                               Width="100"
-                               Height="100"
+                               Width="95"
+                               Height="95"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"/>
                         <ControlTemplate.Triggers>
@@ -160,7 +159,7 @@
                    FontSize="26"
                    FontWeight="Bold"
                    
-                   Margin="3,10,0,-10"/>
+                   Margin="10,10,0,-10"/>
 
                 <Label Grid.Row="1"
                    Content="with Biometric System"
@@ -168,7 +167,7 @@
                    FontSize="22"
                    FontWeight="Light"
                    FontStyle="Italic"
-                   Margin="3,-8,0,0"/>
+                   Margin="10,-8,0,0"/>
             </Grid>
             <Button Grid.Column="4"
                     x:Name="Button1"
@@ -189,11 +188,11 @@
         </Grid>
 
         <Grid Grid.Row="1">
-            <Image
-               Source="images/logo2.png"
-               Opacity=".15"
-               Panel.ZIndex="-2"
-               Margin="410,65,-178,-216"/>
+            <Image Source="images/logo2.png"
+                   Opacity=".5"
+                   Panel.ZIndex="-2"
+                   Margin="410,65,-178,-216"/>
+            
             <Frame Name="Page"
                    Margin="40"
                    NavigationUIVisibility="Hidden"/>

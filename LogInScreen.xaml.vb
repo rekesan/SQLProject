@@ -15,6 +15,15 @@ Public Class LogInScreen
         Dim _username = login_username.Text
         Dim _password = HashString(login_password.Password)
 
+        Try
+            With _username
+                _username = .Remove(.IndexOf("'")).Trim
+            End With
+        Catch ex As Exception
+
+        End Try
+
+
         Dim query = "select count(1) as `return` from log_in where username='" & _username & "' and password='" & _password & "';"
 
         Try
@@ -24,8 +33,8 @@ Public Class LogInScreen
             If dba.cmdReader.GetInt32("return") = 0 Then
                 MsgBox("Wrong username or password, try again.", MsgBoxStyle.Exclamation, "Error")
             Else
-                Dim mainwindow As New MainWindow
-                mainwindow.Show()
+                Dim mainWin As New MainWindow
+                mainWin.Show()
                 Me.Close()
             End If
 
