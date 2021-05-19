@@ -1,9 +1,6 @@
 ﻿
 Public Class LogInScreen
 
-    Dim userFocused = False
-    Dim passFocused = False
-
     Private Sub Cancel_Click(sender As Object, e As RoutedEventArgs)
         Me.Close()
     End Sub
@@ -50,13 +47,16 @@ Public Class LogInScreen
         If e.LeftButton Then DragMove()
     End Sub
 
-    Private Sub login_username_GotFocus(sender As Object, e As RoutedEventArgs)
-        If Not userFocused Then login_username.Text = ""
-        userFocused = True
-    End Sub
+    Sub GotFocus_txt(sender As Object, e As RoutedEventArgs)
+        Try
+            Dim a As TextBox
+            a = e.Source
+            a.Text = ""
+        Catch ex As Exception
+            Dim a As PasswordBox
+            a = e.Source
+            a.Password = ""
+        End Try
 
-    Private Sub login_password_GotFocus(sender As Object, e As RoutedEventArgs)
-        If Not passFocused Then login_password.Password = ""
-        passFocused = True
     End Sub
 End Class

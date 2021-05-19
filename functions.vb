@@ -35,7 +35,7 @@ Module functions
         Try
             dba.readFile = My.Computer.FileSystem.ReadAllText(My.Computer.FileSystem.CurrentDirectory & "\connection.txt")
             With dba.conn
-                If .State = ConnectionState.Open Then .Close()
+                If .State Then .Close()
                 .ConnectionString = dba.readFile
                 .Open()
             End With
@@ -72,5 +72,12 @@ Module functions
         dba.adapter = New MySqlDataAdapter(dba.cmd)
         dba.cmdReader.Close()
         Return dba.adapter
+    End Function
+
+    Function GenerateID() As String
+
+    End Function
+    Function IfEmpty(toCheck As String) As Boolean
+        Return String.IsNullOrWhiteSpace(toCheck)
     End Function
 End Module

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SQLProject"
         mc:Ignorable="d"
         Height="760"
-        Width="1000"
+        Width="1250"
         MinWidth="950"
         MinHeight="760"
         Background="#FFE6E6E6"
@@ -15,6 +15,7 @@
         WindowStyle="None"
         Style="{DynamicResource CustomWindowStyle}"
         MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}}">
+    
     <Window.Resources>
         <Style x:Key="CustomWindowStyle" TargetType="{x:Type Window}">
             <Setter Property="WindowChrome.WindowChrome">
@@ -37,7 +38,7 @@
                         <Grid Background="#FF1A1A1E">
                             <Border Background="{TemplateBinding Background}"
                                     BorderBrush="Transparent"
-                                    BorderThickness="0,25,0,0">
+                                    BorderThickness="0">
                                 <AdornerDecorator>
                                     <ContentPresenter />
                                 </AdornerDecorator>
@@ -65,6 +66,7 @@
                                             FontSize="23"
                                             Height="40"
                                             Background="Transparent"
+                                            ToolTip="Minimize"
                                             WindowChrome.IsHitTestVisibleInChrome="True" 
                                             Style="{StaticResource ButtonStyle}" Click="Minimize"/>
 
@@ -76,6 +78,7 @@
                                             Content="○"
                                             FontSize="23"
                                             Height="40"
+                                            ToolTip="Maximize"
                                             Background="Transparent"
                                             WindowChrome.IsHitTestVisibleInChrome="True"
                                             Style="{StaticResource ButtonStyle}"/>
@@ -88,6 +91,7 @@
                                             FontSize="23"
                                             Height="40"
                                             Background="Transparent"
+                                            ToolTip="Close"
                                             WindowChrome.IsHitTestVisibleInChrome="True"
                                             Style="{StaticResource ButtonStyle}"/>
                                 </StackPanel>
@@ -110,6 +114,12 @@
 
         <Grid Grid.Row="0"
               Background="#FF2E2E32">
+            <!--<Grid.Background>
+                <LinearGradientBrush EndPoint="0.1,1" StartPoint="0.9,0">
+                    <GradientStop Color="#FFF9BA5F" Offset="-1"/>
+                    <GradientStop Color="#FFE038AB" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>-->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="90"/>
@@ -123,7 +133,8 @@
             <Button Grid.Column="1"
                     Background="Transparent"
                     BorderBrush="Transparent"
-                    Click="Btn_Click_About">
+                    Click="Btn_Click_About"
+                    ToolTip="About">
                 <Button.Template>
                     <ControlTemplate>
                         <Image Source="images/logo.white.png"
@@ -169,38 +180,565 @@
                    FontStyle="Italic"
                    Margin="10,-8,0,0"/>
             </Grid>
-            <Button Grid.Column="4"
+            <Button Grid.Column="5"
                     x:Name="Button1"
                     Content="Add"
                     Click="Btn_Click_1"
+                    Visibility="Hidden"
                     Style="{StaticResource ButtonStyle}"/>
-            <Button Grid.Column="5"
+            <Button Grid.Column="6"
                     x:Name="Button2"
                     Content="View"
                     Click="Btn_Click_2"
+                    Visibility="Hidden"
                     Style="{StaticResource ButtonStyle}"/>
             <Button Grid.Column="6"
                     x:Name="Button3"
                     Content="Update"
                     Click="Btn_Click_3"
+                    Visibility="Hidden"
                     Style="{StaticResource ButtonStyle}"/>
 
         </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1"
+              ClipToBounds="True">
             <Image Source="images/logo2.png"
                    Opacity=".5"
                    Panel.ZIndex="-2"
-                   Margin="410,65,-178,-216"/>
+                   Margin="520,-68,-288,-83"/>
             
-            <Frame Name="Page"
+            <!--<Frame Name="Page"
                    Margin="40"
-                   NavigationUIVisibility="Hidden"/>
+                   Width="1150"
+                   NavigationUIVisibility="Hidden"
+                   Source="/SQLProject;component/Page2.xaml"
+                   />-->
+
+            <Border Margin="40"
+                    Background="#FFC5C5C5"
+                    Width="1150"
+                    Opacity=".95"/>
+            <Grid Margin="40"
+                  Width="1150"
+                  x:Name="GridControls">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="550"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.RowSpan="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <Label Content="Registered Person(s)"
+                   FontSize="18"
+                   FontWeight="Black"
+                   Margin="7,5"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"/>
+
+                    <Label Grid.Column="1"
+                   Content="Search"
+                   FontSize="15"
+                   FontWeight="Black"
+                   Margin="7,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"/>
+
+                    <TextBox x:Name="SearchBox"
+                     FontSize="18"
+                     Grid.Column="1"
+                     Margin="60,9,10,9"
+                     BorderThickness="0"
+                     TextChanged="Search"/>
+
+                    <DataGrid x:Name="Data_Grid"                      
+                      Grid.Row="1"
+                      Grid.ColumnSpan="2"
+                      Grid.RowSpan="5"
+                      Margin="10,0,10,10"
+                      AutoGenerateColumns="False"
+                      BorderBrush="#FF383838"
+                      FontSize="14"
+                      CanUserAddRows="False"
+                      Background="White"
+                      ItemsSource="{Binding Path=PersonTable}"
+                      SelectionMode="Single"
+                      VerticalScrollBarVisibility="Auto"
+                      CanUserResizeRows="False"
+                      CanUserResizeColumns="True"
+                      HorizontalGridLinesBrush="#FFC5C5C5"
+                      VerticalGridLinesBrush="#FFC5C5C5">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Path=ID_Number}" Header="ID" Width="25" IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding Path=First_Name}" Header="First Name" Width="20*" IsReadOnly="True" CanUserSort="False"/>
+                            <DataGridTextColumn Binding="{Binding Path=Middle_Name}" Header="Middle"  Width="20*" IsReadOnly="True" CanUserSort="False"/>
+                            <DataGridTextColumn Binding="{Binding Path=Last_Name}" Header="Last Name" Width="20*" IsReadOnly="True" CanUserSort="False"/>
+                            <DataGridTextColumn Binding="{Binding Path=Extension}" Header="Ext" CanUserSort="False" IsReadOnly="True" />
+                            <DataGridTextColumn Binding="{Binding Path=Municipality}" Header="Municipality" IsReadOnly="True" CanUserSort="False"/>
+                            <DataGridTextColumn Binding="{Binding Path=Province_City}" Header="Province/City" Width="20*" IsReadOnly="True" CanUserSort="False"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+
+                <Border Grid.Column="1"
+                Grid.RowSpan="5"
+                Background="#FFE6E6E6"
+                />
+
+                <Grid Grid.Column="2"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center"
+              Width="521"
+              Height="395">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="113*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="200"/>
+                        <RowDefinition Height="148*"/>
+                        <RowDefinition Height="47*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Column="0"
+                    Grid.Row="0">
+                        <Border CornerRadius="100"
+                    Margin="10"
+                    Background="#FFDADADA"
+                        Panel.ZIndex="-1">
+                            <Image  x:Name="Photo"
+                            Source="{Binding photo, TargetNullValue={x:Null}}"
+                            RenderOptions.BitmapScalingMode="HighQuality"
+                            Opacity="1"
+                            Panel.ZIndex="-1"/>
+                        </Border>
+                        <Button Background="Transparent"
+                        ToolTip="Select Image"
+                        Width="50"
+                        Height="50"
+                        Style="{StaticResource ButtonStyle}">
+                        </Button>
+                    </Grid>
+
+                    <Grid Grid.Column="1"
+                  x:Name="TextBoxGrid"
+                  Grid.Row="0"
+                  Margin="10,10,0,0"
+                  Grid.RowSpan="2">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <!--<RowDefinition/>-->
+                            <!--<RowDefinition/>-->
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="12"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Last Name" 
+                               Height="12"
+                               FontStyle="Italic"/>
+
+                            <TextBox Grid.Row="1"
+                               x:Name="Last_Name"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               Background="#FFBBBABA"
+                               BorderThickness="0"
+                               FontWeight="Bold"
+                               Margin="10,0,0,0"/>
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="12"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="First Name" 
+                               Height="12"
+                               FontStyle="Italic"/>
+
+                            <TextBox Grid.Row="1"
+                               x:Name="First_Name"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               Background="#FFBBBABA"
+                               BorderThickness="0"
+                               FontWeight="Bold"
+                               Margin="10,0,0,0"/>
+                        </Grid>
+
+                        <Grid Grid.Row="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="12"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Middle Name" 
+                               Height="12"
+                               FontStyle="Italic"/>
+
+                            <TextBox Grid.Row="1"
+                               x:Name="Middle_Name"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Background="#FFBBBABA"
+                               BorderThickness="0"
+                               Margin="10,0,0,0"/>
+                        </Grid>
+
+                        <Grid Grid.Row="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="12"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Extension Name" 
+                               Height="12"
+                               FontStyle="Italic"/>
+
+                            <TextBox Grid.Row="1"
+                               x:Name="Extension_Name"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                             BorderThickness="0"
+                               FontWeight="Bold"
+                               Background="#FFBBBABA"
+                               Margin="10,0,0,0"/>
+                        </Grid>
+
+                        <Grid Grid.Row="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="12"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+
+                            <TextBlock Text="Gender"
+                               Height="12"
+                               FontStyle="Italic"
+                               Grid.ColumnSpan="2"/>
+
+                            <TextBox Grid.Row="1"
+                               x:Name="Gender"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Background="#FFBBBABA"
+                               BorderThickness="0"
+                               Margin="10,2,0,0"
+                             Grid.ColumnSpan="2"/>
+                        </Grid>
+
+                        <Grid Grid.Row="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="12"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Blood Type" 
+                               Height="12"
+                               FontStyle="Italic"/>
+
+                            <TextBox Grid.Row="1"
+                               x:Name="Blood_Type"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Background="#FFBBBABA"
+                               BorderThickness="0"
+                               Margin="10,2,0,0"/>
+
+                        </Grid>
+
+                        <Grid Grid.Row="6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="13*"/>
+                                <ColumnDefinition Width="25*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="12"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Marital Status"
+                               
+                               Height="12"
+                               FontStyle="Italic" Grid.ColumnSpan="2"/>
+
+                            <TextBox Grid.Row="1"
+                               x:Name="Marital_Status"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               Background="#FFBBBABA"
+                               BorderThickness="0"
+                               FontWeight="Bold"
+                               Margin="10,3,0,1" Grid.ColumnSpan="2" Height="21"/>
+                        </Grid>
+
+                        <Grid Grid.Row="7">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="12"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Birth Date"
+                               Height="12"
+                               FontStyle="Italic"/>
+
+                            <DatePicker Grid.Row="1"
+                                Panel.ZIndex="1"
+                                Name="Birth_Date"
+                                FontSize="15"
+                                Margin="10,4,0,3" 
+                                BorderBrush="Transparent"
+                                BorderThickness="0"
+                                Text="January 7, 1970"
+                                SelectedDateFormat="Long"
+                                DisplayDate="2000-01-01" SelectedDate="2000-01-05"/>
+
+
+                            <!--<TextBox Grid.Row="1"
+                               x:Name="Birth_Date"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               Background="#FFBBBABA"
+                               BorderThickness="0"
+                               FontWeight="Bold"
+                               Margin="10,0,0,0"/>-->
+
+                        </Grid>
+                    </Grid>
+
+                    <Grid Grid.Column="0"
+                  Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="21"/>
+                            <RowDefinition Height="70"/>
+                            <RowDefinition Height="33"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock x:Name="ID_Number"
+                            Background="#FFD6D6D6"
+                            TextAlignment="Center"
+                            FontSize="18"
+                            FontWeight="Bold"/>
+
+                        <Grid
+                      Grid.RowSpan="2"
+                      Margin="0,8,0,0" Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="12"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Address" 
+                               Height="12"
+                               FontStyle="Italic"/>
+
+                            <Grid Grid.Row="1"
+                          Margin="10,5,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="17"/>
+                                    <RowDefinition />
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="4"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="Street_Number"
+                                    TextWrapping="Wrap"
+                                    VerticalAlignment="Center"
+                                    Text="Street Number"
+                                    Background="#FFBBBABA"
+                                    BorderThickness="0"
+                                    FontSize="12"
+                                    FontWeight="Bold"
+                                    Panel.ZIndex="100"
+                                     GotFocus="GotFocus_Txt"/>
+                                    <TextBox Grid.Column="2"
+                                    x:Name="Street_Name"
+                                    TextWrapping="Wrap"
+                                    VerticalAlignment="Center"
+                                    Text="Street Name"
+                                    Background="#FFBBBABA"
+                                    BorderThickness="0"
+                                    FontSize="12"
+                                    FontWeight="Bold"
+                                    Panel.ZIndex="100"
+                                     GotFocus="GotFocus_Txt"/>
+                                </Grid>
+
+                                <TextBox Grid.Row="1"
+                                   x:Name="Municipality"
+                                   TextWrapping="Wrap"
+                                   VerticalAlignment="Center"
+                                   Background="#FFBBBABA"
+                                   BorderThickness="0"
+                                   Text="Municipality"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                     GotFocus="GotFocus_Txt"/>
+
+                                <TextBox Grid.Row="2"
+                                   x:Name="Province"
+                                   TextWrapping="Wrap"
+                                   VerticalAlignment="Center"
+                                   Background="#FFBBBABA"
+                                   BorderThickness="0"
+                                   Text="Province/City"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                     GotFocus="GotFocus_Txt"/>
+                            </Grid>
+                        </Grid>
+
+                        <Grid Grid.Row="3" Margin="0,0,0,1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="12"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Zip Code"
+                               Height="12"
+                               FontStyle="Italic"/>
+
+                            <TextBox Grid.Row="1"
+                               x:Name="Zip_Code"
+                               VerticalAlignment="Bottom"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Background="#FFBBBABA"
+                               BorderThickness="0"
+                               Margin="10,0,0,0" Height="18"/>
+                        </Grid>
+                    </Grid>
+
+                    <Grid Grid.Row="2"
+                  Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="Work_btn"
+                        Grid.Column="0"
+                        Margin="5,10,5,0" 
+                        Content="Work"
+                        IsEnabled="False"
+                        Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="Educ_BG_btn"
+                        Grid.Column="1" 
+                        Margin="5,10,5,0" 
+                        Content="Education"
+                        IsEnabled="False"
+                        Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="Family_btn" 
+                        Grid.Column="2"
+                        Margin="5,10,05,0" 
+                        Content="Family"
+                        IsEnabled="False"
+                        Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="Criminal_Rec_btn"
+                        Grid.Column="3"
+                        Margin="5,10,05,0"
+                        Content="Criminal Records"
+                        IsEnabled="False"
+                        Style="{StaticResource ButtonStyle}"/>
+                    </Grid>
+
+                </Grid>
+
+
+
+                <Grid Grid.Row="1"
+              Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="5"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="1"
+                    Content="Add"
+                    x:Name="Add_Btn"
+                    Margin="5,10,5,0"
+                    Style="{StaticResource ButtonStyle}"/>
+                    <Button Grid.Column="2"
+                    Content="Clear"
+                    x:Name="Clear_Btn"
+                    Margin="5,10,5,0"
+                    Style="{StaticResource ButtonStyle}"/>
+                    <Button Grid.Column="3"
+                    Content="Update"
+                    x:Name="Update"
+                    Margin="5,10,5,0"
+                    Style="{StaticResource ButtonStyle}"
+                    IsEnabled="False"/>
+                    <Button Grid.Column="4"
+                    Content="Delete"
+                    x:Name="Delete"
+                    Margin="5,10,5,0"
+                    Style="{StaticResource ButtonStyle}"
+                    IsEnabled="False"/>
+                </Grid>
+            </Grid>
         </Grid>
 
         <Grid Grid.Row="2"
-              Background="#FFBBBBC5">
+              ClipToBounds="True">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.1,1" StartPoint="0.9,0">
+                    <GradientStop Color="#FFF9BA5F" Offset="-1"/>
+                    <GradientStop Color="#FFE038AB" Offset="3"/>
+                </LinearGradientBrush>
+            </Grid.Background>
 
+            <Image Source="images/logo.white.png"
+                   Width="500"
+                   Height="500"
+                   Opacity=".5"
+                   Margin="-10,-164,752,-296"/>
+            
             <TextBlock Foreground="#FF4F4F4F"
                    FontSize="13"
                    FontStyle="Italic"
