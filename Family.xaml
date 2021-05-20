@@ -134,7 +134,7 @@
                   HorizontalGridLinesBrush="#FFC5C5C5"
                   VerticalGridLinesBrush="#FFC5C5C5"
                   IsReadOnly="True"
-                  BorderThickness="0"
+                  BorderThickness="1"
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Family_ID}" Header="ID" CanUserSort="False"/>
@@ -217,6 +217,7 @@
                 <Button Grid.Column="0"
                         x:Name="Add_btn"
                         Content="Add"
+                        IsDefault="True"
                         Style="{StaticResource ButtonStyle}"/>
                 <Button Grid.Column="2"
                         x:Name="Clear_btn"

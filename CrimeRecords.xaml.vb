@@ -86,6 +86,9 @@
     End Sub
 
     Private Sub Add_btn_Click(sender As Object, e As RoutedEventArgs) Handles Add_btn.Click
+
+        If Check_Empty() Then Return
+
         query = "INSERT INTO `nat_id`.`crime record`
                     (`ID_Number`,
                     `Violation`,
@@ -106,6 +109,9 @@
     End Sub
 
     Private Sub Update_btn_Click(sender As Object, e As RoutedEventArgs) Handles Update_btn.Click
+
+        If Check_Empty() Then Return
+
         query = "UPDATE `nat_id`.`crime record`
                 SET
                 `Violation` = '" & Violation.Text & "',
@@ -122,6 +128,14 @@
         Load_Table("SELECT * FROM `nat_id`.`crime record` WHERE ID_Number='" & ID & "';")
 
     End Sub
+
+    Private Function Check_Empty() As Boolean
+        If IfEmpty(Violation.Text) Or IfEmpty(Year.Text) Or IfEmpty(Year.Text) Then
+            MsgBox("Please fill the Violation and Year appropriately.", MsgBoxStyle.Exclamation, "Prompt")
+            Return True
+        End If
+        Return False
+    End Function
 
     Private Sub Delete_btn_Click(sender As Object, e As RoutedEventArgs) Handles Delete_btn.Click
         query = "DELETE FROM `nat_id`.`crime record`

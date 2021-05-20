@@ -90,6 +90,9 @@
     End Sub
 
     Private Sub Add_btn_Click(sender As Object, e As RoutedEventArgs) Handles Add_btn.Click
+
+        If Check_Empty() Then Return
+
         query = "INSERT INTO `nat_id`.`educational background`
                     (`ID_Number`,
                     `Name`,
@@ -111,7 +114,18 @@
         Clear()
     End Sub
 
+    Private Function Check_Empty() As Boolean
+        If IfEmpty(Name.Text) Or IfEmpty(Year.Text) Or IfEmpty(Address.Text) Then
+            MsgBox("Please fill the Name, Year, and Address appropriately.", MsgBoxStyle.Exclamation, "Prompt")
+            Return True
+        End If
+        Return False
+    End Function
+
     Private Sub Update_btn_Click(sender As Object, e As RoutedEventArgs) Handles Update_btn.Click
+
+        If Check_Empty() Then Return
+
         query = "UPDATE `nat_id`.`educational background`
                 SET
                 `Name` = '" & Name.Text & "',

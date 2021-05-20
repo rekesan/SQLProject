@@ -9,6 +9,7 @@ Class MainWindow
     Dim selected_name As String
     Dim query As String
     Dim Image_Directory As String
+    Dim selected_image_fromDB As BitmapImage
 
 
     Private Sub MouseDrag(ByVal obj As Object, e As MouseButtonEventArgs)
@@ -52,7 +53,7 @@ Class MainWindow
         Load_Table("SELECT * FROM `nat_id`.`person`;")
     End Sub
 
-    Private Sub select_cell(sender As Object, e As SelectionChangedEventArgs) Handles Data_Grid.SelectionChanged
+    Private Sub Data_Grid_SelectionChanged(sender As Object, e As SelectionChangedEventArgs) Handles Data_Grid.SelectionChanged
         Try
             Dim item = Data_Grid.SelectedItem
             If IsNothing(item) Then
@@ -87,12 +88,19 @@ Class MainWindow
             Dim gndr = dba.cmdReader("Gender").ToString
             Dim photo_loc = dba.cmdReader("photo_loc")
 
-            Photo.Source = If(IsDBNull(photo_loc), Nothing, New BitmapImage(New Uri(photo_loc)))
+            Try
+                selected_image_fromDB = New BitmapImage(New Uri(photo_loc))
+                Photo.Source = If(IsDBNull(photo_loc), Nothing, selected_image_fromDB)
+            Catch ex As Exception
+
+            End Try
+
 
             With dba.cmdReader("Birth_Date").ToString
                 Birth_Date.Text = .Remove(.IndexOf(" "))
             End With
 
+            Gender.Text = dba.cmdReader("Gender").ToString
             Marital_Status.Text = dba.cmdReader("Marital_Status").ToString
             Blood_Type.Text = dba.cmdReader("Blood_Type").ToString
 
@@ -232,16 +240,23 @@ Class MainWindow
 
 
         ID_Number.Text = ""
+        Gender.Text = ""
+        Blood_Type.Text = ""
+        Marital_Status.Text = ""
+        Birth_Date.Text = "1970-01-01"
 
         Zip_Code.Text = ""
-        Street_Name.Text = "Street Name"
-        Street_Number.Text = "Street Number"
+        Street_Name.Text = "Barangay"
+        Street_Number.Text = "Street"
         Municipality.Text = "Municipality"
         Province.Text = "Province/City"
         Photo.Source = Nothing
 
+        image_selected = ""
+        image_selected_FileName = ""
+        selected_name = ""
+
         Add_Btn.IsEnabled = True
-        'Clear_Btn.IsEnabled = False
         Delete.IsEnabled = False
         Update.IsEnabled = False
         Work_btn.IsEnabled = False
@@ -252,7 +267,7 @@ Class MainWindow
 
     End Sub
 
-    Private Sub Unfocused(sender As Object, e As RoutedEventArgs) Handles Data_Grid.LostFocus
+    Private Sub Data_Grid_LostFocus(sender As Object, e As RoutedEventArgs) Handles Data_Grid.LostFocus
         Data_Grid.SelectedItem = Nothing
     End Sub
 
@@ -272,11 +287,7 @@ Class MainWindow
             dba.cmdReader.Read()
         Loop Until dba.cmdReader("RETURN") = 0
 
-        Try
-            My.Computer.FileSystem.CopyFile(image_selected, Image_Directory & "/" & image_selected_FileName)
-        Catch ex As Exception
-
-        End Try
+        Change_Directory_Image()
 
         query = "INSERT INTO `nat_id`.`person`
                 (`ID_Number`,
@@ -322,7 +333,7 @@ Class MainWindow
         With dba.cmdReader
             .Read()
             If .RecordsAffected > 0 Then
-                MsgBox("Added Successfully", MsgBoxStyle.Information, "Prompt")
+                MsgBox("Added Successfully!", MsgBoxStyle.Information, "Prompt")
             Else
                 MsgBox("Failed", MsgBoxStyle.Exclamation, "Prompt")
             End If
@@ -361,6 +372,15 @@ Class MainWindow
 
         Return str
     End Function
+
+    Sub Change_Directory_Image()
+        Try
+            My.Computer.FileSystem.CopyFile(image_selected, Image_Directory & "/" & image_selected_FileName)
+            My.Computer.FileSystem.DeleteFile(image_selected)
+        Catch ex As Exception
+
+        End Try
+    End Sub
 
     Private Sub Add_Image_Btn_Click(sender As Object, e As RoutedEventArgs) Handles Add_Image_Btn.Click
         Try
@@ -422,5 +442,63 @@ Class MainWindow
             .TitleName = selected_name
             .ShowDialog()
         End With
+    End Sub
+
+    Private Sub Update_Click(sender As Object, e As RoutedEventArgs) Handles Update.Click
+        Dim check = Check_Emty_Textboxes()
+        If Not check.Equals("Please Fill the following:") Then
+            MsgBox(check, MsgBoxStyle.Information, "Prompt")
+            Return
+        End If
+
+        Dim img As String
+
+        If Not IfEmpty(image_selected_FileName) Then
+            img = Image_Directory.Replace("\", "/") & "/" & image_selected_FileName
+        Else
+            img = selected_image_fromDB.UriSource.OriginalString.Replace("\", "/")
+        End If
+
+        query = "UPDATE `nat_id`.`person`
+                SET
+                `First_Name` = '" & First_Name.Text & "',
+                `Middle_Name` = '" & Middle_Name.Text & "',
+                `Last_Name` = '" & Last_Name.Text & "',
+                `Extension` = '" & If(Extension_Name.Text.Equals("N/A"), "", Extension_Name.Text) & "',
+                `Marital_Status` = '" & Marital_Status.Text & "',
+                `Gender` = '" & Gender.Text & "',
+                `Blood_Type` = '" & Blood_Type.Text & "',
+                `Birth_Date` = '" & Format(Birth_Date.SelectedDate.Value, "yyyy/MM/dd") & "',
+                `Street_Number` = '" & Street_Number.Text & "',
+                `Street_Name` = '" & Street_Name.Text & "',
+                `Municipality` = '" & Municipality.Text & "',
+                `Province_City` = '" & Province.Text & "',
+                `Zip_Code` = '" & Zip_Code.Text & "'
+                WHERE `ID_Number` = '" & selected.Text & "';
+
+                UPDATE `nat_id`.`biometric`
+                SET
+                `photo_loc` = '" & img & "'
+                WHERE `ID_Number` = '" & selected.Text & "';"
+
+        Change_Directory_Image()
+
+        dba.cmdReader = QueryReader(ConnectDB(), query)
+
+        With dba.cmdReader
+            .Read()
+            If .RecordsAffected > 0 Then
+                MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Prompt")
+            Else
+                MsgBox("Failed", MsgBoxStyle.Exclamation, "Prompt")
+            End If
+        End With
+
+        dba.cmdReader.Close()
+        dba.conn.Close()
+
+        Load_Table("SELECT * FROM `nat_id`.`person`;")
+        Clear()
+
     End Sub
 End Class
