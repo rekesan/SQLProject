@@ -53,7 +53,7 @@ Module functions
                 dba.cmdReader = .ExecuteReader
             End With
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, "Prompt")
         End Try
         Return dba.cmdReader
     End Function
@@ -66,7 +66,7 @@ Module functions
                 dba.cmdReader = .ExecuteReader
             End With
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, "Prompt")
         End Try
 
         dba.adapter = New MySqlDataAdapter(dba.cmd)
@@ -75,7 +75,9 @@ Module functions
     End Function
 
     Function GenerateID() As String
-        Return ""
+        Dim myInt As Integer
+        myInt = (Int(999 * Rnd()) * 1000000) + (Int(999 * Rnd()) * 1000) + Int(999 * Rnd())
+        Return "NIS-" & Format(myInt, "000-000-000")
     End Function
     Function IfEmpty(toCheck As String) As Boolean
         Return String.IsNullOrWhiteSpace(toCheck)

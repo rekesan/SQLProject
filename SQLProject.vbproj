@@ -145,8 +145,32 @@
     <Compile Include="about.xaml.vb">
       <DependentUpon>about.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CrimeRecords.xaml.vb">
+      <DependentUpon>CrimeRecords.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Education.xaml.vb">
+      <DependentUpon>Education.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Family.xaml.vb">
+      <DependentUpon>Family.xaml</DependentUpon>
+    </Compile>
     <Compile Include="functions.vb" />
+    <Compile Include="Work.xaml.vb">
+      <DependentUpon>Work.xaml</DependentUpon>
+    </Compile>
     <Page Include="about.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CrimeRecords.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Education.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Family.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -170,6 +194,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="theme\Theme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Work.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

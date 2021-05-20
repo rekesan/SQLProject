@@ -1,37 +1,18 @@
 ﻿Imports Microsoft.Win32
 
 Class MainWindow
-    'Private backColorNavigated = Color.FromRgb(70, 70, 77)
-    'Private backColor = Color.FromRgb(46, 46, 50)
     Dim dba As New dbAccess
     Dim selected As TextBlock
     Dim selected_bool As Boolean
     Dim image_selected As String
+    Dim image_selected_FileName As String
+    Dim selected_name As String
+    Dim query As String
+    Dim Image_Directory As String
 
-    Private Sub Close_Click(sender As Object, e As RoutedEventArgs)
-        Me.Close()
-    End Sub
+
     Private Sub MouseDrag(ByVal obj As Object, e As MouseButtonEventArgs)
         If e.LeftButton Then DragMove()
-    End Sub
-
-    Private Sub Btn_Click_1(sender As Object, e As RoutedEventArgs)
-        '    ChangeColor(Button1, backColorNavigated)
-        '    ChangeColor(Button2, backColor)
-        '    ChangeColor(Button3, backColor)
-        '    Page.Navigate(New Page1)
-    End Sub
-    Private Sub Btn_Click_2(sender As Object, e As RoutedEventArgs)
-        '    ChangeColor(Button1, backColor)
-        '    ChangeColor(Button2, backColorNavigated)
-        '    ChangeColor(Button3, backColor)
-        '    Page.Navigate(New Page2)
-    End Sub
-    Private Sub Btn_Click_3(sender As Object, e As RoutedEventArgs)
-        '    ChangeColor(Button1, backColor)
-        '    ChangeColor(Button2, backColor)
-        '    ChangeColor(Button3, backColorNavigated)
-        '    Page.Navigate(New Page3)
     End Sub
 
     Private Sub Btn_Click_About(sender As Object, e As RoutedEventArgs)
@@ -39,15 +20,14 @@ Class MainWindow
         abt.ShowDialog()
     End Sub
 
-    Sub ChangeColor(btn As Button, color As Color)
-        btn.Background = New SolidColorBrush(color)
-    End Sub
-
     Sub Click_HyperLink(sender As Object, e As RequestNavigateEventArgs)
         Process.Start(New ProcessStartInfo(e.Uri.AbsoluteUri))
         e.Handled = True
     End Sub
 
+    Private Sub Close_Click(sender As Object, e As RoutedEventArgs)
+        Me.Close()
+    End Sub
     Private Sub Maximize(sender As Object, e As RoutedEventArgs)
         If Me.WindowState = 0 Then
             Me.WindowState = 2
@@ -61,6 +41,14 @@ Class MainWindow
     End Sub
 
     Sub Main() Handles Me.Loaded
+        Try
+
+            Image_Directory = My.Computer.FileSystem.SpecialDirectories.MyDocuments + "/Nat_ID_Images"
+            My.Computer.FileSystem.CreateDirectory(Image_Directory)
+
+        Catch ex As Exception
+
+        End Try
         Load_Table("SELECT * FROM `nat_id`.`person`;")
     End Sub
 
@@ -72,7 +60,11 @@ Class MainWindow
             End If
             selected = Data_Grid.SelectedCells(0).Column.GetCellContent(item)
 
-            Dim query = "SELECT * FROM `nat_id`.`person` WHERE ID_Number='" & selected.Text & "';"
+
+            query = "SELECT * 
+                        FROM `nat_id`.`person`
+                        LEFT JOIN `nat_id`.`biometric` USING (ID_Number)
+                        WHERE ID_Number='" & selected.Text & "';"
             Dim conn = ConnectDB()
 
             dba.cmdReader = QueryReader(conn, query)
@@ -81,6 +73,9 @@ Class MainWindow
             Last_Name.Text = dba.cmdReader("Last_Name").ToString
             First_Name.Text = dba.cmdReader("First_Name").ToString
             Middle_Name.Text = dba.cmdReader("Middle_Name").ToString
+
+            selected_name = "[" & Last_Name.Text & ", " & First_Name.Text & " " & Middle_Name.Text & "]"
+
             Dim ext = dba.cmdReader("Extension").ToString
 
             If ext.Length = 0 Then
@@ -90,17 +85,9 @@ Class MainWindow
             End If
 
             Dim gndr = dba.cmdReader("Gender").ToString
-            Try
-                If gndr = "Male" Then
-                    Photo.Source = Me.FindResource("Male")
-                    Gender.Text = gndr
-                Else
-                    Photo.Source = Me.FindResource("Female")
-                    Gender.Text = gndr
-                End If
-            Catch ex As Exception
-                MsgBox(ex.Message)
-            End Try
+            Dim photo_loc = dba.cmdReader("photo_loc")
+
+            Photo.Source = If(IsDBNull(photo_loc), Nothing, New BitmapImage(New Uri(photo_loc)))
 
             With dba.cmdReader("Birth_Date").ToString
                 Birth_Date.Text = .Remove(.IndexOf(" "))
@@ -156,21 +143,23 @@ Class MainWindow
     Private Sub Delete_Click(sender As Object, e As RoutedEventArgs) Handles Delete.Click
         If MsgBox("Are You sure you want to delete?", MsgBoxStyle.YesNo, "Confirm Delete") = 6 Then
             Dim idNum = selected.Text
-            Dim query = "DELETE FROM `nat_id`.`educational background` WHERE ID_Number='" & idNum & "';" &
+            query = "DELETE FROM `nat_id`.`educational background` WHERE ID_Number='" & idNum & "';" &
                         "DELETE FROM `nat_id`.`biometric` WHERE ID_Number='" & idNum & "';" &
                         "DELETE FROM `nat_id`.`crime record` WHERE ID_Number='" & idNum & "';" &
                         "DELETE FROM `nat_id`.`family` WHERE ID_Number='" & idNum & "';" &
+                        "DELETE FROM `nat_id`.`work` WHERE ID_Number='" & idNum & "';" &
                         "DELETE FROM `nat_id`.`person` WHERE ID_Number='" & idNum & "';"
+
 
             Dim conn = ConnectDB()
             dba.cmdReader = QueryReader(conn, query)
 
             With dba.cmdReader
                 .Read()
-                If .RecordsAffected = 1 Then
-                    MsgBox("Deleted", MsgBoxStyle.Information)
+                If .RecordsAffected > 0 Then
+                    MsgBox("Deleted", MsgBoxStyle.Information, "Prompt")
                 Else
-                    MsgBox("No Records deleted", MsgBoxStyle.Exclamation)
+                    MsgBox("No Records deleted", MsgBoxStyle.Exclamation, "Prompt")
                 End If
             End With
 
@@ -188,7 +177,7 @@ Class MainWindow
 
     Private Sub Search(sender As Object, e As TextChangedEventArgs)
         Dim search = SearchBox.Text
-        Dim qry = "SELECT * 
+        query = "SELECT * 
                    FROM `nat_id`.`person`
                    WHERE ID_Number LIKE '%" & search & "%' 
                    OR Last_Name LIKE '%" & search & "%' 
@@ -196,7 +185,7 @@ Class MainWindow
                    OR Middle_Name LIKE '%" & search & "%' 
                    OR Municipality LIKE '%" & search & "%' 
                    OR Province_City LIKE '%" & search & "%';"
-        Load_Table(qry)
+        Load_Table(query)
     End Sub
 
     Sub Load_Table(qry As String)
@@ -208,7 +197,7 @@ Class MainWindow
             Data_Grid.DataContext = dba.DataSet
             conn.Close()
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, "Prompt")
         End Try
     End Sub
 
@@ -220,12 +209,11 @@ Class MainWindow
                 a.Text = ""
             End If
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, "Error")
+            MsgBox(ex.Message, MsgBoxStyle.Critical, "Prompt")
         End Try
     End Sub
 
     Private Sub Clear_Btn_Click(sender As Object, e As RoutedEventArgs) Handles Clear_Btn.Click
-
         Clear()
     End Sub
 
@@ -238,9 +226,10 @@ Class MainWindow
             End If
             If TypeOf ctrl.Children.Item(1) Is DatePicker Then
                 Dim dt As DatePicker = ctrl.Children.Item(1)
-                dt.Text = ""
+                dt.Text = "1970-01-01"
             End If
         Next
+
 
         ID_Number.Text = ""
 
@@ -268,11 +257,92 @@ Class MainWindow
     End Sub
 
     Private Sub Add_Click(sender As Object, e As RoutedEventArgs) Handles Add_Btn.Click
+        Dim check = Check_Emty_Textboxes()
+        If Not check.Equals("Please Fill the following:") Then
+            MsgBox(check, MsgBoxStyle.Information, "Prompt")
+            Return
+        End If
+
+        Dim Generated_ID As String
+
+        Do
+            Generated_ID = GenerateID()
+            query = "SELECT Count(1) AS `RETURN` FROM nat_id.`person` WHERE ID_Number='" & Generated_ID & "';"
+            dba.cmdReader = QueryReader(ConnectDB(), query)
+            dba.cmdReader.Read()
+        Loop Until dba.cmdReader("RETURN") = 0
+
+        Try
+            My.Computer.FileSystem.CopyFile(image_selected, Image_Directory & "/" & image_selected_FileName)
+        Catch ex As Exception
+
+        End Try
+
+        query = "INSERT INTO `nat_id`.`person`
+                (`ID_Number`,
+                `First_Name`,
+                `Middle_Name`,
+                `Last_Name`,
+                `Extension`,
+                `Marital_Status`,
+                `Gender`,
+                `Blood_Type`,
+                `Birth_Date`,
+                `Street_Number`,
+                `Street_Name`,
+                `Municipality`,
+                `Province_City`,
+                `Zip_Code`)
+                VALUES
+                ('" & Generated_ID & "',
+                '" & First_Name.Text & "',
+                '" & Middle_Name.Text & "',
+                '" & Last_Name.Text & "',
+                '" & Extension_Name.Text & "',
+                '" & Marital_Status.Text & "',
+                '" & Gender.Text & "',
+                '" & Blood_Type.Text & "',
+                '" & Format(Birth_Date.SelectedDate.Value, "yyyy/MM/dd") & "',
+                '" & Street_Number.Text & "',
+                '" & Street_Name.Text & "',
+                '" & Municipality.Text & "',
+                '" & Province.Text & "',
+                '" & Zip_Code.Text & "');
+
+                INSERT INTO `nat_id`.`biometric`
+                (`photo_loc`,
+                `ID_Number`)
+                VALUES
+                (
+                '" & Image_Directory.Replace("\", "/") & "/" & image_selected_FileName & "',
+                '" & Generated_ID & "');"
+
+        dba.cmdReader = QueryReader(ConnectDB(), query)
+
+        With dba.cmdReader
+            .Read()
+            If .RecordsAffected > 0 Then
+                MsgBox("Added Successfully", MsgBoxStyle.Information, "Prompt")
+            Else
+                MsgBox("Failed", MsgBoxStyle.Exclamation, "Prompt")
+            End If
+        End With
+
+        dba.cmdReader.Close()
+        dba.conn.Close()
+
+
+        Load_Table("SELECT * FROM `nat_id`.`person`;")
+        Clear()
+    End Sub
+
+    Private Function Check_Emty_Textboxes() As String
         Dim str = "Please Fill the following:"
 
         For Each ctrl As Grid In TextBoxGrid.Children
             If TypeOf ctrl.Children.Item(1) Is TextBox Then
                 Dim txtbox As TextBox = ctrl.Children.Item(1)
+                If txtbox.Name.Equals("Extension_Name") Then Continue For
                 If (IfEmpty(txtbox.Text)) Then str &= vbNewLine & txtbox.Name.Replace("_", " ")
             End If
             If TypeOf ctrl.Children.Item(1) Is DatePicker Then
@@ -289,8 +359,8 @@ Class MainWindow
         If IfEmpty(Province.Text) Then str &= vbNewLine & "Province/City"
         If IfEmpty(Zip_Code.Text) Then str &= vbNewLine & "Zip Code"
 
-        MsgBox(str, MsgBoxStyle.Information, "Error")
-    End Sub
+        Return str
+    End Function
 
     Private Sub Add_Image_Btn_Click(sender As Object, e As RoutedEventArgs) Handles Add_Image_Btn.Click
         Try
@@ -302,14 +372,15 @@ Class MainWindow
             fileDiag.ShowDialog()
 
             image_selected = fileDiag.FileName
+            image_selected_FileName = fileDiag.SafeFileName
 
             Dim bitmap As New BitmapImage(New Uri(image_selected))
-            With bitmap
-                If Not .PixelHeight = .PixelWidth Then
-                    MsgBox("Please choose an image with the same dimension.")
-                    Return
-                End If
-            End With
+            'With bitmap
+            '    If Not .PixelHeight = .PixelWidth Then
+            '        MsgBox("Please choose an image with the same dimension.")
+            '        Return
+            '    End If
+            'End With
 
             Photo.Source = bitmap
         Catch ex As Exception
@@ -318,18 +389,38 @@ Class MainWindow
     End Sub
 
     Private Sub Work_btn_Click(sender As Object, e As RoutedEventArgs) Handles Work_btn.Click
-
+        Dim work As New Work
+        With work
+            .ID = selected.Text
+            .TitleName = selected_name
+            .ShowDialog()
+        End With
     End Sub
 
     Private Sub Educ_BG_btn_Click(sender As Object, e As RoutedEventArgs) Handles Educ_BG_btn.Click
-
+        Dim educ As New Education
+        With educ
+            .ID = selected.Text
+            .TitleName = selected_name
+            .ShowDialog()
+        End With
     End Sub
 
     Private Sub Family_btn_Click(sender As Object, e As RoutedEventArgs) Handles Family_btn.Click
-
+        Dim family As New Family
+        With family
+            .ID = selected.Text
+            .TitleName = selected_name
+            .ShowDialog()
+        End With
     End Sub
 
     Private Sub Criminal_Rec_btn_Click(sender As Object, e As RoutedEventArgs) Handles Criminal_Rec_btn.Click
-
+        Dim crime As New CrimeRecords
+        With crime
+            .ID = selected.Text
+            .TitleName = selected_name
+            .ShowDialog()
+        End With
     End Sub
 End Class
