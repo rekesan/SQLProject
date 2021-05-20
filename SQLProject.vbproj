@@ -146,15 +146,6 @@
       <DependentUpon>about.xaml</DependentUpon>
     </Compile>
     <Compile Include="functions.vb" />
-    <Compile Include="Page1.xaml.vb">
-      <DependentUpon>Page1.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Page2.xaml.vb">
-      <DependentUpon>Page2.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Page3.xaml.vb">
-      <DependentUpon>Page3.xaml</DependentUpon>
-    </Compile>
     <Page Include="about.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -178,18 +169,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Page1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Page2.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Page3.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="theme\Theme.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -251,9 +230,6 @@
     <Resource Include="images\logo.black.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.6 %28x86 and x64%29</ProductName>
@@ -266,14 +242,17 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="logo2.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="images\logo2.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\female.png" />
     <Resource Include="images\male.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="logo2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\camera.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

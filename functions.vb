@@ -75,7 +75,7 @@ Module functions
     End Function
 
     Function GenerateID() As String
-
+        Return ""
     End Function
     Function IfEmpty(toCheck As String) As Boolean
         Return String.IsNullOrWhiteSpace(toCheck)

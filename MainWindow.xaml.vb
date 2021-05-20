@@ -1,10 +1,12 @@
-﻿Imports System.Linq
+﻿Imports Microsoft.Win32
+
 Class MainWindow
-    Private backColorNavigated = Color.FromRgb(70, 70, 77)
-    Private backColor = Color.FromRgb(46, 46, 50)
+    'Private backColorNavigated = Color.FromRgb(70, 70, 77)
+    'Private backColor = Color.FromRgb(46, 46, 50)
     Dim dba As New dbAccess
     Dim selected As TextBlock
     Dim selected_bool As Boolean
+    Dim image_selected As String
 
     Private Sub Close_Click(sender As Object, e As RoutedEventArgs)
         Me.Close()
@@ -229,17 +231,16 @@ Class MainWindow
 
     Private Sub Clear()
 
-        Last_Name.Text = ""
-        First_Name.Text = ""
-        Middle_Name.Text = ""
-
-        Extension_Name.Text = ""
-
-        Gender.Text = ""
-        Birth_Date.Text = "1/1/1970"
-
-        Marital_Status.Text = ""
-        Blood_Type.Text = ""
+        For Each ctrl As Grid In TextBoxGrid.Children
+            If TypeOf ctrl.Children.Item(1) Is TextBox Then
+                Dim txtbox As TextBox = ctrl.Children.Item(1)
+                txtbox.Text = ""
+            End If
+            If TypeOf ctrl.Children.Item(1) Is DatePicker Then
+                Dim dt As DatePicker = ctrl.Children.Item(1)
+                dt.Text = ""
+            End If
+        Next
 
         ID_Number.Text = ""
 
@@ -267,12 +268,68 @@ Class MainWindow
     End Sub
 
     Private Sub Add_Click(sender As Object, e As RoutedEventArgs) Handles Add_Btn.Click
-        If Not IfEmpty(Last_Name.Text) Or Not IfEmpty(First_Name.Text) Then
-        End If
+        Dim str = "Please Fill the following:"
 
-        'Dim empty = Me.Controls.OfType(Of TextBox)().Where(Function(txt) txt.Text.Trim.Length = 0 AndAlso Not exceptions.Contains(txt))
-        'If empty.Any Then
-        '    MsgBox("Please fill")
-        'End If
+        For Each ctrl As Grid In TextBoxGrid.Children
+            If TypeOf ctrl.Children.Item(1) Is TextBox Then
+                Dim txtbox As TextBox = ctrl.Children.Item(1)
+                If (IfEmpty(txtbox.Text)) Then str &= vbNewLine & txtbox.Name.Replace("_", " ")
+            End If
+            If TypeOf ctrl.Children.Item(1) Is DatePicker Then
+                Dim txtbox As DatePicker = ctrl.Children.Item(1)
+                If (IfEmpty(txtbox.Text)) Then str &= vbNewLine & txtbox.Name.Replace("_", " ")
+            End If
+        Next
+
+        If Photo.Source Is Nothing Then str &= vbNewLine & "Image"
+
+        If IfEmpty(Street_Number.Text) Then str &= vbNewLine & "Street Number"
+        If IfEmpty(Street_Name.Text) Then str &= vbNewLine & "Street Name"
+        If IfEmpty(Municipality.Text) Then str &= vbNewLine & "Municipality"
+        If IfEmpty(Province.Text) Then str &= vbNewLine & "Province/City"
+        If IfEmpty(Zip_Code.Text) Then str &= vbNewLine & "Zip Code"
+
+        MsgBox(str, MsgBoxStyle.Information, "Error")
+    End Sub
+
+    Private Sub Add_Image_Btn_Click(sender As Object, e As RoutedEventArgs) Handles Add_Image_Btn.Click
+        Try
+            Dim fileDiag As New OpenFileDialog
+            fileDiag.DefaultExt = ".png"
+            fileDiag.Filter = "PNG|*.png|BMP|*.bmp|JPG|*.jpg;*.jpeg|TIFF|*.tif;*.tiff|All Graphics Types|*.bmp;*.jpg;*.jpeg;*.png;*.tif;*.tiff"
+            fileDiag.Title = "Select Image"
+            fileDiag.Multiselect = False
+            fileDiag.ShowDialog()
+
+            image_selected = fileDiag.FileName
+
+            Dim bitmap As New BitmapImage(New Uri(image_selected))
+            With bitmap
+                If Not .PixelHeight = .PixelWidth Then
+                    MsgBox("Please choose an image with the same dimension.")
+                    Return
+                End If
+            End With
+
+            Photo.Source = bitmap
+        Catch ex As Exception
+            'MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub Work_btn_Click(sender As Object, e As RoutedEventArgs) Handles Work_btn.Click
+
+    End Sub
+
+    Private Sub Educ_BG_btn_Click(sender As Object, e As RoutedEventArgs) Handles Educ_BG_btn.Click
+
+    End Sub
+
+    Private Sub Family_btn_Click(sender As Object, e As RoutedEventArgs) Handles Family_btn.Click
+
+    End Sub
+
+    Private Sub Criminal_Rec_btn_Click(sender As Object, e As RoutedEventArgs) Handles Criminal_Rec_btn.Click
+
     End Sub
 End Class
