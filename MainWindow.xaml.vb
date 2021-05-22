@@ -232,18 +232,18 @@ Class MainWindow
                 Dim txtbox As TextBox = ctrl.Children.Item(1)
                 txtbox.Text = ""
             End If
-            If TypeOf ctrl.Children.Item(1) Is DatePicker Then
-                Dim dt As DatePicker = ctrl.Children.Item(1)
-                dt.Text = "1970-01-01"
-            End If
         Next
 
-
-        ID_Number.Text = ""
-        Gender.Text = ""
-        Blood_Type.Text = ""
-        Marital_Status.Text = ""
-        Birth_Date.Text = "1970-01-01"
+        For Each ctrl As Grid In TextBoxGrid3.Children
+            If TypeOf ctrl.Children.Item(1) Is TextBox Then
+                Dim txtbox As TextBox = ctrl.Children.Item(1)
+                txtbox.Text = ""
+            End If
+            If TypeOf ctrl.Children.Item(1) Is DatePicker Then
+                Dim dt As DatePicker = ctrl.Children.Item(1)
+                dt.SelectedDate = "1970-01-01"
+            End If
+        Next
 
         Zip_Code.Text = ""
         Street_Name.Text = "Barangay"
@@ -356,9 +356,17 @@ Class MainWindow
                 If txtbox.Name.Equals("Extension_Name") Then Continue For
                 If (IfEmpty(txtbox.Text)) Then str &= vbNewLine & txtbox.Name.Replace("_", " ")
             End If
+        Next
+
+        For Each ctrl As Grid In TextBoxGrid3.Children
+            If TypeOf ctrl.Children.Item(1) Is TextBox Then
+                Dim txtbox As TextBox = ctrl.Children.Item(1)
+                If txtbox.Name.Equals("ID_Number") Then Continue For
+                If (IfEmpty(txtbox.Text)) Then str &= vbNewLine & txtbox.Name.Replace("_", " ")
+            End If
             If TypeOf ctrl.Children.Item(1) Is DatePicker Then
                 Dim txtbox As DatePicker = ctrl.Children.Item(1)
-                If (IfEmpty(txtbox.Text)) Then str &= vbNewLine & txtbox.Name.Replace("_", " ")
+                If IfEmpty(txtbox.Text) Then str &= vbNewLine & txtbox.Name.Replace("_", " ")
             End If
         Next
 
@@ -368,7 +376,6 @@ Class MainWindow
         If IfEmpty(Street_Name.Text) Then str &= vbNewLine & "Street Name"
         If IfEmpty(Municipality.Text) Then str &= vbNewLine & "Municipality"
         If IfEmpty(Province.Text) Then str &= vbNewLine & "Province/City"
-        If IfEmpty(Zip_Code.Text) Then str &= vbNewLine & "Zip Code"
 
         Return str
     End Function

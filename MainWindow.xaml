@@ -39,8 +39,13 @@
                     <ControlTemplate TargetType="{x:Type Window}">
                         <Grid Background="#FF1A1A1E">
                             <Border Background="{TemplateBinding Background}"
-                                    BorderBrush="Transparent"
-                                    BorderThickness="0">
+                                    BorderThickness="1">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush EndPoint="0.1,1" StartPoint="0.9,0">
+                                        <GradientStop Color="#FFF9BA5F" Offset="-1"/>
+                                        <GradientStop Color="#FFE038AB" Offset="3"/>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
                                 <AdornerDecorator>
                                     <ContentPresenter />
                                 </AdornerDecorator>
@@ -48,6 +53,7 @@
 
                             <Grid Height="25"
                                   VerticalAlignment="Top"
+                                  Margin="0,2,2,0"
                                   MouseDown="MouseDrag">
 
                                 <Grid.ColumnDefinitions>
@@ -59,8 +65,7 @@
 
 
                                 <StackPanel Orientation="Horizontal"
-                                            Grid.Column="3"
-                                            Margin="0,-3,0,0">
+                                            Grid.Column="3">
                                     <Button VerticalAlignment="Center"
                                             HorizontalAlignment="Center"
                                             Width="35"
@@ -245,7 +250,8 @@
                                                    Grid.Column="1" Focusable="{TemplateBinding Focusable}" 
                                                    HorizontalContentAlignment="Stretch" 
                                                    Grid.Row="0" 
-                                                   VerticalContentAlignment="Stretch">
+                                                   VerticalContentAlignment="Stretch"
+                                                   SelectedText="1970/01/01">
                                     <DatePickerTextBox.Style>
                                         <Style TargetType="{x:Type DatePickerTextBox}">
                                             <Setter Property="Control.Template">
@@ -464,7 +470,7 @@
                 />
 
                 <Grid Grid.Column="2"
-                      Margin="30"
+                      Margin="25"
                       Width="550"
                       Height="430"
                       VerticalAlignment="Top"
@@ -615,7 +621,7 @@
                         </Grid>
 
                         <!-- ASDASDASDASD-->
-                        <Grid Grid.Row="4"
+                        <Grid Grid.Row="5"
                               Grid.RowSpan="3"
                               Margin="0,8,0,0">
                             <Grid.RowDefinitions>
@@ -681,7 +687,7 @@
                             </Grid>
                         </Grid>
                         <!-- ASDASDASDASDASD -->
-                        <Grid Grid.Row="7" Margin="0,0,0,1">
+                        <Grid Grid.Row="4" Margin="0,0,0,1">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="20"/>
                                 <RowDefinition/>
@@ -797,7 +803,8 @@
                     </Grid>
 
                     <Grid Grid.Column="0"
-                          Grid.Row="1">
+                          Grid.Row="1"
+                          x:Name="TextBoxGrid3">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="20"/>
                             <RowDefinition/>
@@ -908,8 +915,8 @@
                                         BorderBrush="Transparent"
                                         BorderThickness="0" 
                                         Style="{DynamicResource DatePickerStyle1}"
-                                        IsTodayHighlighted="True"
-                                        Text="1970-01-01" >
+                                        IsTodayHighlighted="True" 
+                                        SelectedDate="1970-01-01">
                             </DatePicker>
                         </Grid>
                         <!--<Grid Grid.RowSpan="2"
